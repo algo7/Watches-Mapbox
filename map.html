@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Add custom markers in Mapbox GL JS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans"
+      rel="stylesheet"
+    />
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js"></script>
+    <link
+      href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      mapboxgl.accessToken =
+        'pk.eyJ1IjoiYWxnbzciLCJhIjoiY2s4anVka3NnMGt4cjNncGxiYWFzOHFvZiJ9.rZYHg8xF6QahGl0hOaa1cQ';
+      const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/dark-v10',
+        center: [7.447398019358426, 46.94728226151869],
+        zoom: 5,
+      });
+
+      //   const images
+      const imagesArr = [
+        {
+          id: 'IWC',
+          path: './iwc.jpg',
+        },
+        {
+          id: 'Monyco',
+          path: './monyco.jpg',
+        },
+        {
+          id: 'Eramet',
+          path: './eramet.jpg',
+        },
+        {
+          id: 'Morellato',
+          path: './morellato.jpg',
+        },
+        {
+          id: 'Novo_Cristal',
+          path: './novo_cris.png',
+        },
+        {
+          id: 'Panatere',
+          path: './pana.jpg',
+        },
+        {
+          id: 'Rc_TriTech',
+          path: './rctritec.png',
+        },
+        {
+          id: 'SigaTech',
+          path: './siga.png',
+        },
+        {
+          id: 'SilTronix',
+          path: './siltronix.png',
+        },
+        {
+          id: 'UgiTech',
+          path: './ugitech.png',
+        },
+        {
+          id: 'Umicore',
+          path: './umicore.jpg',
+        },
+        {
+          id: 'CM',
+          path: './cm.jpg',
+        },
+      ];
+
+      map.on('load', async () => {
+        // Add images to use as a custom marker
+        await Promise.all(
+          imagesArr.map(
+            (img) =>
+              new Promise((resolve, reject) => {
+                map.loadImage(img.path, function (error, res) {
+                  if (error) throw error;
+                  map.addImage(img.id, res);
+                  resolve();
+                });
+              }),
+          ),
+        );
+
+        console.log('Images Loaded');
+
+        // Add a GeoJSON source with 2 points
+        map.addSource('points', {
+          type: 'geojson',
+          data: {
+            type: 'FeatureCollection',
+            features: [
+              {
+                // feature for Mapbox DC
+                type: 'Feature',
+                geometry: {
+                  type: 'Point',
+                  coordinates: [8.637757378206388, 47.72663665215268],
+                },
+                properties: {
+                  title: 'IWC',
+                },
+              },
+              {
+                // feature for Mapbox SF
+                type: 'Feature',
+                geometry: {
+                  type: 'Point',
+                  coordinates: [6.81144741181986, 47.0861791314791],
+                },
+                properties: {
+                  title: 'Monyco',
+                },
+              },
+              {
+                // feature for Mapbox SF
+                type: 'Feature',
+                geometry: {
+                  type: 'Point',
+                  coordinates: [5.91833833098191, 46.75981920088074],
+                },
+                properties: {
+                  title: 'Eramet',
+                },
+              },
+              {
+                // feature for Mapbox SF
+                type: 'Feature',
+                geometry: {
+                  type: 'Point',
+                  coordinates: [4.878075809599969, 45.86275938610304],
+                },
+                properties: {
+                  title: 'Morellato',
+                },
+              },
+              {
+                // feature for Mapbox SF
+                type: 'Feature',
+                geometry: {
+                  type: 'Point',
+                  coordinates: [7.263995654150473, 47.151061080579446],
+                },
+                properties: {
+                  title: 'CM',
+                },
+              },
+              //   {
+              //     // feature for Mapbox SF
+              //     type: 'Feature',
+              //     geometry: {
+              //       type: 'Point',
+              //       coordinates: [6.813631955998403, 47.087443280648266],
+              //     },
+              //     properties: {
+              //       title: 'Novo_Cristal',
+              //     },
+              //   },
+              {
+                // feature for Mapbox SF
+                type: 'Feature',
+                geometry: {
+                  type: 'Point',
+                  coordinates: [7.0017237654959095, 47.27446683626229],
+                },
+                properties: {
+                  title: 'Panatere',
+                },
+              },
+              {
+                // feature for Mapbox SF
+                type: 'Feature',
+                geometry: {
+                  type: 'Point',
+                  coordinates: [9.400701856007618, 47.39307338638925],
+                },
+                properties: {
+                  title: 'Rc_TriTech',
+                },
+              },
+              {
+                // feature for Mapbox SF
+                type: 'Feature',
+                geometry: {
+                  type: 'Point',
+                  coordinates: [7.343527701215703, 46.218804856127335],
+                },
+                properties: {
+                  title: 'SigaTech',
+                },
+              },
+              {
+                // feature for Mapbox SF
+                type: 'Feature',
+                geometry: {
+                  type: 'Point',
+                  coordinates: [6.116186484381778, 46.140883849657335],
+                },
+                properties: {
+                  title: 'SilTronix',
+                },
+              },
+              {
+                // feature for Mapbox SF
+                type: 'Feature',
+                geometry: {
+                  type: 'Point',
+                  coordinates: [6.566441561564228, 46.08274463143673],
+                },
+                properties: {
+                  title: 'UgiTech',
+                },
+              },
+              {
+                // feature for Mapbox SF
+                type: 'Feature',
+                geometry: {
+                  type: 'Point',
+                  coordinates: [7.804377734068347, 47.578947894857556],
+                },
+                properties: {
+                  title: 'Umicore',
+                },
+              },
+            ],
+          },
+        });
+
+        // Add a symbol layer
+        map.addLayer({
+          id: 'points',
+          type: 'symbol',
+          source: 'points',
+          layout: {
+            'icon-image': [
+              'case',
+              ['==', ['get', 'title'], 'IWC'],
+              'IWC',
+              ['==', ['get', 'title'], 'Monyco'],
+              'Monyco',
+              ['==', ['get', 'title'], 'Morellato'],
+              'Morellato',
+              ['==', ['get', 'title'], 'Novo_Cristal'],
+              'Novo_Cristal',
+              ['==', ['get', 'title'], 'Panatere'],
+              'Panatere',
+              ['==', ['get', 'title'], 'Rc_TriTech'],
+              'Rc_TriTech',
+              ['==', ['get', 'title'], 'SigaTech'],
+              'SigaTech',
+              ['==', ['get', 'title'], 'SilTronix'],
+              'SilTronix',
+              ['==', ['get', 'title'], 'UgiTech'],
+              'UgiTech',
+              ['==', ['get', 'title'], 'Umicore'],
+              'Umicore',
+              ['==', ['get', 'title'], 'Eramet'],
+              'Eramet',
+              ['==', ['get', 'title'], 'CM'],
+              'CM',
+              'IWC',
+            ],
+            'icon-size': 0.2,
+            'icon-allow-overlap': true,
+            'icon-ignore-placement': true,
+            'icon-padding': 0,
+            // get the title name from the source's "title" property
+            // 'text-field': ['get', 'title'],
+            // 'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
+            // 'text-offset': [0, 1.25],
+            // 'text-anchor': 'top',
+          },
+        });
+      });
+    </script>
+  </body>
+</html>
