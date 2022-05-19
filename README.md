@@ -1,2 +1,2 @@
 # Watches-Mapbox
-Mapbox
+## [GitHub Pages](https://algo7.github.io/Watches-Mapbox/)
